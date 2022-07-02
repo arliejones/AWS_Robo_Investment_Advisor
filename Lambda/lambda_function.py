@@ -26,6 +26,18 @@ def build_validation_result(is_valid, violated_slot, message_content):
         "message": {"contentType": "PlainText", "content": message_content},
     }
 
+# To validate age and investment inputs from user
+def validate_age_investment(age, investment_amount, intent_request):
+    if age:
+        age = parse_int(age)
+        if age >= 65:
+            return build_validation_result(False, "age", "You must be 65 or younger to use this service.")
+    if investment_amount is not None:
+        investment_amount = parse_int(investment_amount)
+        if investment_amount <= 5000:
+            return build_validation_result(False, "investment_amount", "Please enter amount that is 5000 or greater")
+    return build_validation_result(True, None, None)
+
 
 ### Dialog Actions Helper Functions ###
 def get_slots(intent_request):
@@ -124,8 +136,68 @@ def recommend_portfolio(intent_request):
     risk_level = get_slots(intent_request)["riskLevel"]
     source = intent_request["invocationSource"]
 
-    # YOUR CODE GOES HERE!
+    if source == "DialogCodeHook":
+        slots = get_slots(intent_request)
+        validation_result = validate_age_investment(first_name, age, investment_amount, risk_level, intent_request)
 
+        if not validation_result["isValid"]:
+            slots[validation_result["violatedSlot"]] = None
+            return elicit_slot(
+                intent_request["sessionAttributes"],
+                intent_request["currentIntent"]["name"],
+                slots,
+                validation_result["violatedSlot"],
+                validation_result["message"],"]
+            )
+
+        output_session_attributes = intent_request["sessionAttributes"]
+
+        return delegate(output_session_attributes, get_slots(intent_request))
+
+    if risk_level == 'None':
+        return close(
+            intent_request["sessionAttributes"],
+            "Fulfilled",
+            {
+                "contentType": "PlainText",
+                "content": """Thank you for your information;
+                With no risk level, you investment recommendation is: 100% bonds (AGG), 0% equities (SPY).
+                """
+            },
+        )
+    elif risk_level == 'Low':
+        return close(
+            intent_request["sessionAttributes"],
+            "Fulfilled",
+            {
+                "contentType": "PlainText",
+                "content": """Thank you for your information;
+                With Low risk level, you investment recommendation is: 60% bonds (AGG), 40% equities (SPY).
+                """
+            },
+        )
+    elif risk_level == 'Medium':
+        return close(
+            intent_request["sessionAttributes"],
+            "Fulfilled",
+            {
+                "contentType": "PlainText",
+                "content": """Thank you for your information;
+                With Medium risk level, you investment recommendation is: 40% bonds (AGG), 60% equities (SPY).
+                """
+            },
+        )
+    elif risk_level == 'High':
+        return close(
+            intent_request["sessionAttributes"],
+            "Fulfilled",
+            {
+                "contentType": "PlainText",
+                "content": """Thank you for your information;
+                With High risk level, you investment recommendation is: 20% bonds (AGG), 80% equities (SPY).
+                """
+            },
+        )
 
 ### Intents Dispatcher ###
 def dispatch(intent_request):
