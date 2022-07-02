@@ -161,7 +161,7 @@ def recommend_portfolio(intent_request):
             {
                 "contentType": "PlainText",
                 "content": """Thank you for your information;
-                With no risk level, you investment recommendation is: 100% bonds (AGG), 0% equities (SPY).
+                I recommend you invest 100% in bonds (AGG) and 0% in equities (SPY).
                 """
             },
         )
@@ -172,7 +172,7 @@ def recommend_portfolio(intent_request):
             {
                 "contentType": "PlainText",
                 "content": """Thank you for your information;
-                With Low risk level, you investment recommendation is: 60% bonds (AGG), 40% equities (SPY).
+                I recommend you invest 60% in bonds (AGG) and 40% in equities (SPY).
                 """
             },
         )
@@ -183,7 +183,7 @@ def recommend_portfolio(intent_request):
             {
                 "contentType": "PlainText",
                 "content": """Thank you for your information;
-                With Medium risk level, you investment recommendation is: 40% bonds (AGG), 60% equities (SPY).
+                I recommend you invest 40% in bonds (AGG) and 60% in equities (SPY).
                 """
             },
         )
@@ -194,7 +194,7 @@ def recommend_portfolio(intent_request):
             {
                 "contentType": "PlainText",
                 "content": """Thank you for your information;
-                With High risk level, you investment recommendation is: 20% bonds (AGG), 80% equities (SPY).
+                I recommend you invest 20% in bonds (AGG) and 80% in equities (SPY).
                 """
             },
         )
