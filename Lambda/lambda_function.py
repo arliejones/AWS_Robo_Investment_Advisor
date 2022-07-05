@@ -144,7 +144,7 @@ def recommend_portfolio(intent_request):
 
     if source == "DialogCodeHook":
         slots = get_slots(intent_request)
-        validation_result = validate_age_investment(first_name, age, investment_amount, risk_level, intent_request)
+        validation_result = validate_age_investment(age, investment_amount, intent_request)
 
         if not validation_result["isValid"]:
             slots[validation_result["violatedSlot"]] = None
