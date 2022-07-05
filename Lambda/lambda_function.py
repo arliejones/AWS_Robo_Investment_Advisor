@@ -30,7 +30,13 @@ def build_validation_result(is_valid, violated_slot, message_content):
 def validate_age_investment(age, investment_amount, intent_request):
     if age:
         age = parse_int(age)
-        if age >= 65:
+        if age < 0:
+            return build_validation_result(
+                False,
+                "age",
+                "Please provide an age greater than 0."
+            )
+        elif age >= 65:
             return build_validation_result(False, "age", "You must be 65 or younger to use this service.")
     if investment_amount is not None:
         investment_amount = parse_int(investment_amount)
